@@ -2,7 +2,7 @@
 	import '../app.css';
 </script>
 
-<div class="bg-purple-300 p-8 h-screen">
+<div class="bg-purple-300 p-8 h-full min-h-screen w-full mb-8">
 	<slot />
 </div>
 <nav class="bg-purple-400 fixed w-full left-0 bottom-0">
