@@ -4,8 +4,7 @@
 			<a href="/recipes"> lista </a>
 		</li>
 		<li class="bg-purple-500 p-3 w-1/2 text-center">
-			<button> nueva receta </button>
+			<a href="/recipe/new"> nueva receta </a>
 		</li>
-		<!-- <li class="bg-purple-500 p-3 w-1/3 text-center">nueva</li> -->
 	</ul>
 </nav>

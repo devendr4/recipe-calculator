@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	let { children, variant = 'h1' }: { children: Snippet; variant: 'h1' | 'h2' | 'h3' | 'h4' } =
-		$props();
+	let {
+		children,
+		variant = 'h1'
+	}: { class?: string; children: Snippet; variant: 'h1' | 'h2' | 'h3' | 'h4' } = $props();
 </script>
 
 {#if variant === 'h1'}
