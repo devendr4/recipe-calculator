@@ -1,18 +1,22 @@
 <script lang="ts">
+	import Button from '$lib/Button.svelte';
+	import Title from '$lib/Title.svelte';
+
 	let displayPrice: boolean = $state(false);
 	let { data } = $props();
 </script>
 
 {#if data?.recipe}
 	<div class="flex flex-col gap-4">
-		<h1 class="text-4xl text-center">{data.recipe.title}</h1>
+		<span class="flex justify-between items-center">
+			<Title variant="h1">{data.recipe.title}</Title>
+			<Button onclick={() => {}}>Editar</Button>
+		</span>
 		<img class="object-cover" src={data.recipe.img} alt={data.recipe.title} />
-		<span class="flex justify-between">
-			<h3>Ingredientes:</h3>
-			<button
-				class="font-bold bg-purple-400 p-2 rounded-md"
-				onclick={() => (displayPrice = !displayPrice)}
-				>Ver {displayPrice ? 'precios' : 'medidas'}</button
+		<span class="flex items-center justify-between">
+			<Title variant="h3">Ingredientes:</Title>
+			<Button onclick={() => (displayPrice = !displayPrice)}
+				>Ver {displayPrice ? 'precios' : 'medidas'}</Button
 			>
 		</span>
 		<ul class="flex gap-4 flex-col">
@@ -30,7 +34,7 @@
 							</p>
 						{:else}
 							<p>
-								{price + '$'}
+								{'$' + price}
 							</p>
 						{/if}
 					</span>
@@ -41,7 +45,7 @@
 			<p class="font-bold">Total:</p>
 
 			<div class="w-full border-t border-gray-700 border-dotted my-4 mx-3"></div>
-			<p>{data.recipe.ingredients.map((i) => i.price).reduce((a, b) => a + b, 0)}$</p>
+			<p>${data.recipe.ingredients.map((i) => i.price).reduce((a, b) => a + b, 0)}</p>
 		</span>
 	</div>
 {/if}
