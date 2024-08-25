@@ -2,12 +2,13 @@ export interface Recipe {
 	id: number;
 	title: string;
 	img: string;
-	ingredients: Ingredients[];
+	ingredients: Ingredient[];
 }
 
-export interface Ingredients {
+export interface Ingredient {
+	id?: number;
 	name: string;
-	price: number;
+	price?: number;
 	amount: number;
-	measurementUnit: string;
+	unit: string;
 }

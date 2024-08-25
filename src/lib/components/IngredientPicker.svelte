@@ -2,6 +2,7 @@
 	import * as Select from '$lib/components/ui/select';
 	import { Input } from '$lib/components/ui/input';
 	import { Button } from '$lib/components/ui/button';
+	import type { Ingredient } from '../../types';
 	const ingredients = [
 		{ value: 'sugar', label: 'Azucar' },
 		{ value: 'flour', label: 'Harina' },
@@ -9,9 +10,19 @@
 		{ value: 'chocolate', label: 'Chocolate' },
 		{ value: 'pineapple', label: 'Piña' }
 	];
-	let selectedIngredient = { value: 'flour', label: 'Harina' };
-	let ingredientData = $state<{ ingredient: string; unit: string }>({ ingredient: '', unit: '' });
-	let { ingredientList }: { ingredientList: [] } = $props();
+	let ingredientData = $state<Ingredient>({ name: '', unit: '', price: 0, amount: 0 });
+	let { ingredientList }: { ingredientList: Ingredient[] } = $props();
+	let ingredientsList = $state([]);
+	let selectedIngredient = ingredientData.name
+		? {
+				label: ingredients.filter((v) => v.value == ingredientData.name)[0].label,
+				value: ingredientData.name
+			}
+		: undefined;
+
+	$effect(() => {
+		console.log(ingredientsList);
+	});
 
 	const units = [
 		{ value: 'kg', label: 'Kilos' },
@@ -22,11 +33,18 @@
 </script>
 
 <div class="flex items-center gap-2">
+	{#each ingredientsList as ing}
+		<p>{ing}</p>
+	{/each}
 	<div class="flex flex-wrap">
 		<Select.Root
 			portal={null}
 			onSelectedChange={(v) => {
-				if (v) ingredientData.ingredient = v.value;
+				if (v) {
+					console.log('selecting');
+					ingredientData.name = v.value;
+					console.log(ingredientData.name);
+				}
 			}}
 			selected={selectedIngredient}
 		>
@@ -70,7 +88,11 @@
 	<Button
 		class="bg-purple-700"
 		onclick={() => {
-			ingredientList.push(selectedIngredient);
+			if (selectedIngredient) {
+				console.log('pushing');
+
+				ingredientsList.push({ name: selectedIngredient.value, amount: 0, unit: 'kg' });
+			}
 		}}>+</Button
 	>
 </div>
