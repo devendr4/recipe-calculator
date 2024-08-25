@@ -1,26 +1,22 @@
 <script>
-	import Input from '$lib/Input.svelte';
-	import Label from '$lib/Label.svelte';
-	import Title from '$lib/Title.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import IngredientPicker from '$lib/components/IngredientPicker.svelte';
+	import { Input } from '$lib/components/ui/input';
+	import Title from '$lib/components/Title.svelte';
+	let ingredientList = $state([]);
 </script>
 
 <Title variant="h1">Nueva receta</Title>
-<form>
-	<Input value={''} label="titulo" name="title" />
-	<Input value={''} label="foto" name="img" />
+<form class="flex flex-col gap-2">
+	<Input value={''} placeholder="Titulo" name="title" />
+	<Input type="file" value={''} name="img" />
 	<div class="mt-2">
 		<Title variant="h3">Ingredientes</Title>
-		<div class="flex justify-between">
-			<div class="flex flex-wrap flex-col w-1/2">
-				<Label className="w-3/6 !text-left">Ingrediente</Label>
-				<Label className="w-1/6">Cantidad</Label>
-				<Label className="w-1/6">Unidad</Label>
-			</div>
-			<div class="w-1/2 flex flex-col gap-2 justify-between mt-2">
-				<input />
-				<input />
-				<input />
-			</div>
-		</div>
+		{#each ingredientList as i}
+			<p>{i.label}</p>
+		{/each}
+		<IngredientPicker {ingredientList} />
+		<div class="w-1/2 flex flex-col gap-2 justify-between mt-2"></div>
 	</div>
+	<Button class="bg-purple-600">Guardar</Button>
 </form>
