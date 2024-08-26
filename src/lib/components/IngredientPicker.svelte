@@ -10,19 +10,6 @@
 		{ value: 'chocolate', label: 'Chocolate' },
 		{ value: 'pineapple', label: 'Piña' }
 	];
-	let ingredientData = $state<Ingredient>({ name: '', unit: '', price: 0, amount: 0 });
-	let { ingredientList }: { ingredientList: Ingredient[] } = $props();
-	let ingredientsList = $state([]);
-	let selectedIngredient = ingredientData.name
-		? {
-				label: ingredients.filter((v) => v.value == ingredientData.name)[0].label,
-				value: ingredientData.name
-			}
-		: undefined;
-
-	$effect(() => {
-		console.log(ingredientsList);
-	});
 
 	const units = [
 		{ value: 'kg', label: 'Kilos' },
@@ -30,6 +17,28 @@
 		{ value: 'l', label: 'Litros' },
 		{ value: 'unidad', label: 'Unidad' }
 	];
+
+	let ingredientData = $state<Ingredient>({ name: '', unit: '', price: 0, amount: 0 });
+	// let { ingredientList }: { ingredientList: Ingredient[] } = $props();
+	let { addIngredient }: { addIngredient: (ingredient: Ingredient) => void } = $props();
+	let ingredientsList = $state([]);
+	let selectedIngredient = $derived(
+		ingredientData.name
+			? {
+					label: ingredients.filter((v) => v.value == ingredientData.name)[0].label,
+					value: ingredientData.name
+				}
+			: undefined
+	);
+
+	let selectedUnit = $derived(
+		ingredientData.unit
+			? {
+					label: units.filter((v) => v.value == ingredientData.unit)[0].label,
+					value: ingredientData.unit
+				}
+			: undefined
+	);
 </script>
 
 <div class="flex items-center gap-2">
@@ -41,9 +50,7 @@
 			portal={null}
 			onSelectedChange={(v) => {
 				if (v) {
-					console.log('selecting');
 					ingredientData.name = v.value;
-					console.log(ingredientData.name);
 				}
 			}}
 			selected={selectedIngredient}
@@ -61,11 +68,12 @@
 					{/each}
 				</Select.Group>
 			</Select.Content>
-			<Select.Input name="favoriteFruit" />
+			<!-- <Select.Input name="favoriteFruit" /> -->
 		</Select.Root>
+		<Input placeholder="Cantidad" class="w-1/2" type="number" bind:value={ingredientData.amount} />
 		<Select.Root
 			portal={null}
-			selected={selectedIngredient}
+			selected={selectedUnit}
 			onSelectedChange={(v) => {
 				if (v) ingredientData.unit = v.value;
 			}}
@@ -81,17 +89,14 @@
 					{/each}
 				</Select.Group>
 			</Select.Content>
-			<Select.Input name="favoriteFruit" />
+			<!-- <Select.Input name="favoriteFruit" /> -->
 		</Select.Root>
-		<Input placeholder="Cantidad" class="w-1/2" type="number" />
 	</div>
 	<Button
 		class="bg-purple-700"
 		onclick={() => {
-			if (selectedIngredient) {
-				console.log('pushing');
-
-				ingredientsList.push({ name: selectedIngredient.value, amount: 0, unit: 'kg' });
+			if (ingredientData) {
+				addIngredient(ingredientData);
 			}
 		}}>+</Button
 	>
