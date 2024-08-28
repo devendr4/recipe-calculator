@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import Title from '$lib/components/Title.svelte';
+	import DottedLine from '$lib/components/DottedLine.svelte';
 
 	let displayPrice: boolean = $state(false);
 	let { data } = $props();
@@ -25,7 +26,7 @@
 					<span>
 						{name}
 					</span>
-					<div class="w-full border-t border-gray-700 border-dotted my-4 mx-3"></div>
+					<DottedLine />
 
 					<span>
 						{#if displayPrice}

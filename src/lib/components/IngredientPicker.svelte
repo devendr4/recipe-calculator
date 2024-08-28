@@ -3,13 +3,8 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Button } from '$lib/components/ui/button';
 	import type { Ingredient } from '../../types';
-	const ingredients = [
-		{ value: 'sugar', label: 'Azucar' },
-		{ value: 'flour', label: 'Harina' },
-		{ value: 'egg', label: 'Huevos' },
-		{ value: 'chocolate', label: 'Chocolate' },
-		{ value: 'pineapple', label: 'Piña' }
-	];
+	import { ingredients } from '../../types';
+	import { toast } from 'svelte-sonner';
 
 	const units = [
 		{ value: 'kg', label: 'Kilos' },
@@ -18,12 +13,11 @@
 		{ value: 'unidad', label: 'Unidad' }
 	];
 
-	let ingredientData = $state<Ingredient>({ name: '', unit: '', price: 0, amount: 0 });
-	// let { ingredientList }: { ingredientList: Ingredient[] } = $props();
+	let ingredientData = $state<Ingredient>({ name: '', unit: '', price: 0 });
 	let { addIngredient }: { addIngredient: (ingredient: Ingredient) => void } = $props();
 	let ingredientsList = $state([]);
 	let selectedIngredient = $derived(
-		ingredientData.name
+		ingredientData?.name
 			? {
 					label: ingredients.filter((v) => v.value == ingredientData.name)[0].label,
 					value: ingredientData.name
@@ -32,7 +26,7 @@
 	);
 
 	let selectedUnit = $derived(
-		ingredientData.unit
+		ingredientData?.unit
 			? {
 					label: units.filter((v) => v.value == ingredientData.unit)[0].label,
 					value: ingredientData.unit
@@ -68,7 +62,6 @@
 					{/each}
 				</Select.Group>
 			</Select.Content>
-			<!-- <Select.Input name="favoriteFruit" /> -->
 		</Select.Root>
 		<Input placeholder="Cantidad" class="w-1/2" type="number" bind:value={ingredientData.amount} />
 		<Select.Root
@@ -89,14 +82,16 @@
 					{/each}
 				</Select.Group>
 			</Select.Content>
-			<!-- <Select.Input name="favoriteFruit" /> -->
 		</Select.Root>
 	</div>
 	<Button
 		class="bg-purple-700"
 		onclick={() => {
-			if (ingredientData) {
+			if (ingredientData?.name && ingredientData?.unit && ingredientData?.amount) {
 				addIngredient(ingredientData);
+				ingredientData = { name: '', unit: '', price: 0 };
+			} else {
+				toast.error('Error, introduzca ingrediente');
 			}
 		}}>+</Button
 	>
