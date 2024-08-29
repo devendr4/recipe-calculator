@@ -20,7 +20,6 @@
 	<div class="mt-2">
 		<Title variant="h3">Ingredientes</Title>
 		<IngredientList recipeIngredients={$form.ingredients} />
-		<!-- <IngredientPicker ingredientList={$form.ingredients} /> -->
 		<IngredientPicker {addIngredient} />
 		<div class="w-1/2 flex flex-col gap-2 justify-between mt-2"></div>
 	</div>
