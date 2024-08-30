@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Ingredient } from '../../types';
-	import { ingredients } from '../../types';
+	import { ingredients, units } from '../../types';
 	import DottedLine from './DottedLine.svelte';
 
 	let { recipeIngredients }: { recipeIngredients: Ingredient[] } = $props();
@@ -11,10 +11,10 @@
 		<p>{ingredients.find((v) => v.value === i.name)?.label}</p>
 
 		<DottedLine />
-		<span class="flex">
+		<span class="flex gap-1">
 			<p>{i.amount}</p>
 			{#if i.unit !== 'unidad'}
-				<p>{i.unit}</p>
+				<p>{units.find((v) => v.value === i.unit)?.label}</p>
 			{/if}
 		</span>
 	</div>

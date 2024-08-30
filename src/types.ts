@@ -24,8 +24,8 @@ export const ingredients = [
 
 export const units = [
 	{ value: 'default', label: 'Unidades' },
-	{ value: 'kg', label: 'Kilos' },
-	{ value: 'g', label: 'Gramos' },
-	{ value: 'l', label: 'Litros' },
-	{ value: 'unidad', label: 'Unidad' }
+	{ value: 'kg', label: 'kilos' },
+	{ value: 'g', label: 'gramos' },
+	{ value: 'l', label: 'litros' },
+	{ value: 'unidad', label: 'unidad' }
 ];
