@@ -11,7 +11,7 @@ const ingredientSchema = z.object({
 });
 
 const recipeSchema = z.object({
-	id: z.string().optional(),
+	// id: z.string().optional(),
 	title: z.string().min(2, { message: 'Debe ingresar un titulo' }),
 	image: z
 		.instanceof(File, { message: 'Seleccione una foto' })
@@ -34,8 +34,7 @@ export const actions = {
 					form
 				});
 			}
-			console.log('tringh');
-			console.log(request);
+			console.log(form.data);
 		} catch (e) {
 			console.log(e);
 		}

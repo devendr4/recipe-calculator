@@ -9,7 +9,9 @@
 	import Error from '$lib/components/Error.svelte';
 	let { data } = $props();
 	let preview = $state('');
-	const { form, enhance, errors } = superForm(data.form);
+	const { form, enhance, errors } = superForm(data.form, {
+		dataType: 'json'
+	});
 	function addIngredient(ingredient: Ingredient) {
 		$form.ingredients = [...$form.ingredients, ingredient];
 	}
@@ -25,6 +27,8 @@
 <Title variant="h1">Nueva receta</Title>
 <form class="flex flex-col gap-2 mt-4" method="POST" enctype="multipart/form-data" use:enhance>
 	<Input placeholder="Titulo" name="title" bind:value={$form.title} />
+	<input hidden name="image" bind:value={$form.image} />
+	<input hidden name="ingredients" bind:value={$form.ingredients} />
 	{#if $errors.title}<Error>{$errors.title}</Error>{/if}
 	<label for="file" class="bg-purple-600 text-white text-center rounded p-2"
 		>Seleccione imagen</label
