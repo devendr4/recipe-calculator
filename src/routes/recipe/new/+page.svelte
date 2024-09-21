@@ -7,10 +7,16 @@
 	import type { Ingredient } from '../../../types';
 	import IngredientList from '$lib/components/IngredientList.svelte';
 	import Error from '$lib/components/Error.svelte';
+	import { redirect } from '@sveltejs/kit';
 	let { data } = $props();
 	let preview = $state('');
 	const { form, enhance, errors } = superForm(data.form, {
-		dataType: 'json'
+		dataType: 'json',
+
+		onResult: async ({ result }) => {
+			if (result.type == 'success') {
+			}
+		}
 	});
 	function addIngredient(ingredient: Ingredient) {
 		$form.ingredients = [...$form.ingredients, ingredient];

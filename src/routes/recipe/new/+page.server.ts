@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { redirect } from '@sveltejs/kit';
 
 const ingredientSchema = z.object({
 	id: z.number().optional(),
@@ -34,6 +35,7 @@ export const actions = {
 					form
 				});
 			}
+
 			console.log(form.data);
 		} catch (e) {
 			console.log(e);

@@ -1,10 +1,22 @@
-<nav class="bg-purple-400 fixed w-full left-0 bottom-0">
-	<ul class="flex gap-2">
-		<li class="bg-purple-500 p-3 w-1/2 text-center">
-			<a href="/recipes"> lista </a>
-		</li>
-		<li class="bg-purple-500 p-3 w-1/2 text-center">
-			<a href="/recipe/new"> nueva receta </a>
-		</li>
-	</ul>
+<script>
+	import { goto } from '$app/navigation';
+</script>
+
+<nav class="bg-purple-400 flex gap-2 fixed w-full left-0 bottom-0">
+	<button
+		class="bg-purple-500 p-3 w-1/2 text-center"
+		on:click={() => {
+			goto('/recipes');
+		}}
+	>
+		lista
+	</button>
+	<button
+		class="bg-purple-500 p-3 w-1/2 text-center"
+		on:click={() => {
+			goto('/recipe/new');
+		}}
+	>
+		nueva receta
+	</button>
 </nav>
