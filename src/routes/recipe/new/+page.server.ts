@@ -16,8 +16,8 @@ const recipeSchema = z.object({
 	title: z.string().min(2, { message: 'Debe ingresar un titulo' }),
 	image: z
 		.instanceof(File, { message: 'Seleccione una foto' })
-		.refine((f) => f.size < 100_000, 'Max 100 kB upload size.'),
-	ingredients: z.array(ingredientSchema).min(2, { message: 'Debe escoger al menos 2 ingredientes' })
+		.refine((f) => f.size < 500_000, 'Max 100 kB upload size.'),
+	ingredients: z.array(ingredientSchema).min(0, { message: 'Debe escoger al menos 2 ingredientes' })
 });
 
 export const load = async (event) => {
@@ -36,6 +36,7 @@ export const actions = {
 				});
 			}
 
+			fetch('http://localhost:8080/recipes');
 			console.log(form.data);
 		} catch (e) {
 			console.log(e);
