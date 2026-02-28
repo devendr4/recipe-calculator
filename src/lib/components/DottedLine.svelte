@@ -1,1 +1,3 @@
-<div class="w-full border-t border-gray-700 border-dotted my-4 mx-3"></div>
+<div class="flex-1 flex items-center mx-2">
+	<div class="w-full border-t border-dotted border-gray-300"></div>
+</div>

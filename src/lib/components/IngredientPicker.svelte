@@ -8,56 +8,64 @@
 
 	let ingredientData = $state<Ingredient>({ name: '', unit: '', price: 0 });
 	let { addIngredient }: { addIngredient: (ingredient: Ingredient) => void } = $props();
-	let ingredientsList = $state([]);
-	let selectedIngredient = $derived(
-		ingredientData?.name
-			? {
-					label: ingredients.filter((v) => v.value == ingredientData.name)[0].label,
-					value: ingredientData.name
-				}
-			: undefined
+
+	let searchQuery = $state('');
+	let showDropdown = $state(false);
+
+	let filteredIngredients = $derived(
+		ingredients.filter(
+			(v) =>
+				v.value !== 'default' &&
+				v.label.toLowerCase().includes(searchQuery.toLowerCase())
+		)
 	);
 
 	let selectedUnit = $derived(
-		ingredientData?.unit
+		ingredientData?.unit && ingredientData.unit !== 'default'
 			? {
 					label: units.filter((v) => v.value == ingredientData.unit)[0].label,
 					value: ingredientData.unit
 				}
 			: undefined
 	);
+
+	function selectIngredient(ingredient: { value: string; label: string }) {
+		ingredientData.name = ingredient.value;
+		searchQuery = ingredient.label;
+		showDropdown = false;
+	}
 </script>
 
-<div class="flex items-center gap-2">
-	{#each ingredientsList as ing}
-		<p>{ing}</p>
-	{/each}
-	<div class="flex flex-wrap gap-2">
-		<Select.Root
-			portal={null}
-			onSelectedChange={(v) => {
-				if (v) {
-					ingredientData.name = v.value;
-				}
-			}}
-			selected={selectedIngredient}
-		>
-			<Select.Trigger class="w-full">
-				<Select.Value placeholder="Ingrediente" />
-			</Select.Trigger>
-			<Select.Content>
-				<Select.Group>
-					<Select.Label>Ingredientes</Select.Label>
-					{#each ingredients as ingredient}
-						{#if ingredient.value !== 'default'}
-							<Select.Item value={ingredient.value} label={ingredient.label}
-								>{ingredient.label}</Select.Item
+<div class="flex items-end gap-2">
+	<div class="flex flex-col gap-2 flex-1">
+		<div class="relative">
+			<Input
+				placeholder="Ingrediente"
+				bind:value={searchQuery}
+				onfocus={() => (showDropdown = true)}
+				onblur={() => setTimeout(() => (showDropdown = false), 150)}
+				oninput={() => {
+					showDropdown = true;
+					ingredientData.name = '';
+				}}
+			/>
+			{#if showDropdown && filteredIngredients.length > 0}
+				<ul class="absolute z-50 w-full bg-white border border-gray-200 rounded-xl shadow-lg mt-1 max-h-48 overflow-y-auto">
+					{#each filteredIngredients as ingredient}
+						<li>
+							<button
+								type="button"
+								class="w-full text-left px-3 py-2 text-sm hover:bg-purple-50 hover:text-purple-700 transition-colors"
+								onmousedown={() => selectIngredient(ingredient)}
 							>
-						{/if}
+								{ingredient.label}
+							</button>
+						</li>
 					{/each}
-				</Select.Group>
-			</Select.Content>
-		</Select.Root>
+				</ul>
+			{/if}
+		</div>
+
 		<div class="flex gap-2">
 			<Input
 				placeholder="Cantidad"
@@ -88,12 +96,14 @@
 			</Select.Root>
 		</div>
 	</div>
+
 	<Button
-		class="bg-purple-700"
+		class="bg-purple-700 mb-px"
 		onclick={() => {
 			if (ingredientData?.name && ingredientData?.unit && ingredientData?.amount) {
 				addIngredient(ingredientData);
-				ingredientData = { name: 'default', unit: 'default', price: 0 };
+				ingredientData = { name: '', unit: '', price: 0 };
+				searchQuery = '';
 			} else {
 				toast.error('Error, introduzca ingrediente');
 			}

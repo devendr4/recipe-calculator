@@ -5,7 +5,7 @@
 </script>
 
 <Toaster />
-<div class="bg-purple-300 p-8 h-full min-h-screen w-full mb-8">
+<div class="bg-purple-50 min-h-screen w-full pb-24 px-5 pt-6 max-w-lg mx-auto">
 	<slot />
 </div>
 
